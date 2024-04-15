@@ -16,8 +16,7 @@ public class Enemy : MonoBehaviour
     Vector3 dir;
 
     private float moveTimer = 3f;
-    [SerializeField] private float maxHp = 10f;
-    private float curHp = 0f;
+    [SerializeField] private float mobHp = 10f;
     [SerializeField] GameObject player;
     [SerializeField] BoxCollider2D checkPlayer;
     [SerializeField] private GameObject Boom;
@@ -25,7 +24,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        curHp = maxHp;
+   
     }
 
 
@@ -63,8 +62,8 @@ public class Enemy : MonoBehaviour
 
     public void Hit(float _damage)
     {
-        curHp -= _damage;
-        if (curHp <= 0f)
+        mobHp -= _damage;
+        if (mobHp <= 0f)
         {
             Destroy(gameObject);
             GameObject obj = Instantiate(Boom, transform.position, Quaternion.identity, layerDynamic);

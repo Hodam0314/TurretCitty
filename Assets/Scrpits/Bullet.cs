@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float bulletDelay = 1.0f;
-    private float damage = 0.0f;
+    [SerializeField] private float damage = 0.0f;
     private bool playerBullet = false;
     private bool turretBullet = false;
 
@@ -29,25 +29,5 @@ public class Bullet : MonoBehaviour
     private void OnBecameInvisible()
     {
         Destroy(gameObject);
-    }
-
-    public void SetDamage(bool _isPlayer, float _damage, float _speed = -1)
-    {
-        playerBullet = _isPlayer;
-        damage = _damage;
-        if(_speed != -1)
-        {
-            bulletSpeed = _speed;
-        }
-    }
-
-    public void turretDamage(bool _isTurret, float _damage, float _speed = -1)
-    {
-        turretBullet = _isTurret;
-        damage = _damage;
-        if(_speed != -1)
-        {
-            bulletSpeed = _speed;
-        }
     }
 }

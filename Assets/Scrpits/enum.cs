@@ -4,7 +4,6 @@ using UnityEngine;
 
 public enum GameTag
 {
-    None,
     Player,
     Enemy,
     Item,

@@ -49,7 +49,6 @@ public class Weapon : MonoBehaviour
     {
         GameObject obj = Instantiate(gunBullet, _pos, Quaternion.identity, layerDynamic);
         Bullet bul = obj.GetComponent<Bullet>();
-        bul.SetDamage(true, gunDamage);
     }
 
 
