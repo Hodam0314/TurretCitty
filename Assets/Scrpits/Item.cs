@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Item : MonoBehaviour
 {
-    [SerializeField] BoxCollider2D checkUser;
-
-    public enum itemType
+    public enum ItemType
     {
         Hp,
         WeaponBox,
         Damage,
     }
+
+    [SerializeField] ItemType itemType;
+
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -21,4 +24,13 @@ public class Item : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        transform.position = transform.position;
+    }
+
+    public ItemType GetItemType()
+    {
+        return itemType;
+    }
 }

@@ -17,19 +17,32 @@ public class Enemy : MonoBehaviour
 
     private float moveTimer = 3f;
     [SerializeField] private float mobHp = 10f;
-    [SerializeField] GameObject player;
-    [SerializeField] BoxCollider2D checkPlayer;
     [SerializeField] private GameObject Boom;
     [SerializeField] Transform layerDynamic;
+    GameObject player;
 
     private void Start()
     {
-   
+        GetPlayer();
     }
 
+    private void GetPlayer()
+    {
+        Player playerSc = GameManager.Instance.GetPlayer();
+        if (playerSc != null)
+        {
+            player = playerSc.gameObject;
+        }
+    }
 
     void Update()
     {
+        if (player == null)
+        {
+            GetPlayer();
+            return;
+        }
+
         moving();
         turning();
     }
