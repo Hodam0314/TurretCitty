@@ -12,10 +12,11 @@ public class Player : MonoBehaviour
     private SpriteRenderer sr;
 
     [Header("플레이어 관련")]
-    [SerializeField] private float playerHp = 10f;
+    [SerializeField] private float maxHp = 10f;
     [SerializeField] private float curHp;
     [SerializeField] private float moveSpeed;
     [SerializeField] private GameObject Boom;
+    [SerializeField] private bool isLookRight = false;
 
     [Header("쓰레기통")]
     [SerializeField] Transform layerDynamic;
@@ -23,7 +24,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        curHp = playerHp;
+        curHp = maxHp;
     }
 
     private void Start()
@@ -46,7 +47,10 @@ public class Player : MonoBehaviour
             if (itemType == Item.ItemType.Hp)
             {
                 curHp += 3f;
-
+                if(curHp > maxHp)
+                {
+                    curHp = maxHp;
+                }
             }
             else if (itemType == Item.ItemType.WeaponBox)
             {
@@ -60,6 +64,14 @@ public class Player : MonoBehaviour
     {
         moveDir.x = Input.GetAxisRaw("Horizontal") * moveSpeed;
         moveDir.y = Input.GetAxisRaw("Vertical") * moveSpeed;
+        if(moveDir.x > 0)
+        {
+            isLookRight = true;
+        }
+        else if (moveDir.x < 0)
+        {
+            isLookRight = false;
+        }
 
         transform.position += new Vector3(moveDir.x, moveDir.y, 0) * Time.deltaTime;
     }

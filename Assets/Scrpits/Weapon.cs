@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Weapon : MonoBehaviour
 {
@@ -23,14 +24,20 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float hammerDamage = 25f;
     [SerializeField] private float swordDamage = 10f;
 
-
+    Player player;
+    Vector3 moveDir;
 
     [SerializeField]
     private Transform layerDynamic;
 
+    private void Start()
+    {
+        player = GameManager.Instance.GetPlayer();
+    }
 
     private void Update()
     {
+        Position();
         Shooting();
 
     }
@@ -44,9 +51,20 @@ public class Weapon : MonoBehaviour
 
     }
 
+    private void Position()
+    {
+        //moveDir.x = Input.GetAxisRaw("Horizontal");
+        //Vector3 pos = player.transform.position;
+        //if (moveDir.x > 0)
+        //{
+        //    transform.position = new Vector3(-0.92f, -0.52f, 0);
+        //}
+
+    }
 
     private void createBullet(Vector3 _pos)
     {
+
         GameObject obj = Instantiate(gunBullet, _pos, Quaternion.identity, layerDynamic);
         Bullet bul = obj.GetComponent<Bullet>();
     }

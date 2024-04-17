@@ -9,20 +9,12 @@ public class Item : MonoBehaviour
     {
         Hp,
         WeaponBox,
-        Damage,
+        Coin,
+        Weapon,
     }
 
     [SerializeField] ItemType itemType;
 
-
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.tag == GameTag.Player.ToString())
-        {
-            
-        }
-    }
 
     private void Update()
     {
