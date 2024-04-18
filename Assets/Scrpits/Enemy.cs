@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-
+    Explosion boom;
     private bool isPlayer = false;
     private bool isMoving = false;
     private float moveSpeed = 3f;
     private float minrange = -5f;
     private float maxrange = 5f;
-    private SpriteRenderer sr;
+    private SpriteRenderer spriteR;
 
     Vector3 dir;
 
@@ -20,6 +20,11 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject Boom;
     [SerializeField] Transform layerDynamic;
     GameObject player;
+
+    private void Awake()
+    {
+        boom = GetComponent<Explosion>();
+    }
 
     private void Start()
     {
@@ -76,15 +81,12 @@ public class Enemy : MonoBehaviour
     public void Hit(float _damage)
     {
         mobHp -= _damage;
-        if (mobHp <= 0f)
+        if (mobHp <= 0)
         {
             Destroy(gameObject);
-            GameObject obj = Instantiate(Boom, transform.position, Quaternion.identity, layerDynamic);
-            Explosion objSc = obj.GetComponent<Explosion>();
-            float sizeWidth = sr.sprite.rect.width;
-            objSc.SetAnimationSize(sizeWidth);
+            Instantiate(Boom, transform.position, Quaternion.identity, layerDynamic);
+            //float sizeWidth = spriteR.sprite.rect.width;
+            //boom.SetAnimationSize(sizeWidth);
         }
-
-
     }
-} 
+}

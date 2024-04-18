@@ -23,12 +23,13 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float rifleDamage = 5f;
     [SerializeField] private float hammerDamage = 25f;
     [SerializeField] private float swordDamage = 10f;
+    [SerializeField] private float cooltime = 0.3f;
+    private float curtime;
 
     Player player;
     Vector3 moveDir;
-
-    [SerializeField]
     private Transform layerDynamic;
+    public Transform pos;
 
     private void Start()
     {
@@ -37,37 +38,23 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
-        Position();
         Shooting();
-
     }
 
     private void Shooting()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if(curtime <= 0)
         {
-            createBullet(transform.position);
+            if (Input.GetKey(KeyCode.Z))
+            {
+            curtime = cooltime;
+            Instantiate(gunBullet, pos.position, transform.rotation, layerDynamic);
+            }
         }
-
+        curtime -= Time.deltaTime;
     }
 
-    private void Position()
-    {
-        //moveDir.x = Input.GetAxisRaw("Horizontal");
-        //Vector3 pos = player.transform.position;
-        //if (moveDir.x > 0)
-        //{
-        //    transform.position = new Vector3(-0.92f, -0.52f, 0);
-        //}
 
-    }
-
-    private void createBullet(Vector3 _pos)
-    {
-
-        GameObject obj = Instantiate(gunBullet, _pos, Quaternion.identity, layerDynamic);
-        Bullet bul = obj.GetComponent<Bullet>();
-    }
 
 
 

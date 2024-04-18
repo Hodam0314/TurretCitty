@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 {
     Vector3 moveDir;
     Animator anim;
-    private SpriteRenderer sr;
+    private SpriteRenderer playersr;
 
     [Header("플레이어 관련")]
     [SerializeField] private float maxHp = 10f;
@@ -78,17 +78,25 @@ public class Player : MonoBehaviour
 
     private void turning()
     {
-        if (moveDir.x < 0 && transform.localScale.x < 1)
+        //if (moveDir.x < 0 && transform.localScale.x < 1)
+        //{
+        //    Vector3 scale = transform.localScale;
+        //    scale.x *= -1;
+        //    transform.localScale = scale;
+        //}
+        //else if (moveDir.x > 0 && transform.localScale.x > -1)
+        //{
+        //    Vector3 scale = transform.localScale;
+        //    scale.x *= -1;
+        //    transform.localScale = scale;
+        //}
+        if (moveDir.x > 0)
         {
-            Vector3 scale = transform.localScale;
-            scale.x *= -1;
-            transform.localScale = scale;
+            transform.eulerAngles = new Vector3(0, 0, 0);
         }
-        else if (moveDir.x > 0 && transform.localScale.x > -1)
+        else if(moveDir.x < 0)
         {
-            Vector3 scale = transform.localScale;
-            scale.x *= -1;
-            transform.localScale = scale;
+            transform.eulerAngles = new Vector3(0, -180.0f, 0);
         }
     }
 
@@ -104,10 +112,10 @@ public class Player : MonoBehaviour
         if(curHp <= 0)
         {
             Destroy(gameObject);
-            GameObject obj = Instantiate(Boom, transform.position, Quaternion.identity, layerDynamic);
-            Explosion objSc = obj.GetComponent<Explosion>();
-            float sizeWidth = sr.sprite.rect.width;
-            objSc.SetAnimationSize(sizeWidth);
+            /*GameObject obj = */Instantiate(Boom, transform.position, Quaternion.identity, layerDynamic);
+            //Explosion objSc = obj.GetComponent<Explosion>();
+            //float sizeWidth = playersr.sprite.rect.width;
+            //objSc.SetAnimationSize(sizeWidth);
         }
     }
 }

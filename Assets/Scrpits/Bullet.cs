@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -11,6 +12,12 @@ public class Bullet : MonoBehaviour
     private bool playerBullet = false;
     private bool turretBullet = false;
     private bool isright = false;
+
+    private void Start()
+    {
+        Invoke("Destroybullet", 2);
+    }
+
     private void Awake()
     {
         player = GameManager.Instance.GetPlayer();
@@ -20,8 +27,8 @@ public class Bullet : MonoBehaviour
         if (collision.gameObject.tag == GameTag.Enemy.ToString())
         {
             Enemy enemySc = collision.GetComponent<Enemy>();
-            enemySc.Hit(damage);
             Destroy(gameObject);
+            enemySc.Hit(damage);
         }
     }
 
@@ -32,17 +39,24 @@ public class Bullet : MonoBehaviour
 
     private void moving()
     {
-            transform.position += transform.right * Time.deltaTime * bulletSpeed;
-            
-        
+        if(transform.rotation.y == 0)
+        {
+        transform.Translate(transform.right  * bulletSpeed * Time.deltaTime);
+        }
+        else if(transform.rotation.y == 180)
+        {
+            transform.Translate(transform.right * -1 * bulletSpeed * Time.deltaTime);
+        }
+        //else if(transform.rotation.z == )
+           
     }
 
-    public void SetbulletSpeed(float _bulletSpeed, bool _isright)
-    {
-        _bulletSpeed = bulletSpeed;
-        _isright = isright;
-    }
     private void OnBecameInvisible()
+    {
+        Destroy(gameObject);
+    }
+
+    private void Destroybullet()
     {
         Destroy(gameObject);
     }
