@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Build;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -17,9 +18,21 @@ public class Enemy : MonoBehaviour
 
     private float moveTimer = 3f;
     [SerializeField] private float mobHp = 10f;
+    [SerializeField] private float damage = 5f;
     [SerializeField] private GameObject Boom;
     [SerializeField] Transform layerDynamic;
+    //GameObject player;
     GameObject player;
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == GameTag.Player.ToString())
+        {
+            Hit(5.0f);
+            Player playerSc = collision.GetComponent<Player>();
+            playerSc.Hit(damage);
+        }
+    }
 
     private void Awake()
     {

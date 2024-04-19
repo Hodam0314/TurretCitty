@@ -7,13 +7,15 @@ using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
+    Rigidbody2D rigid;
+    PlayerHp playerHp;
     Vector3 moveDir;
     Animator anim;
     private SpriteRenderer playersr;
 
     [Header("플레이어 관련")]
-    [SerializeField] private float maxHp = 10f;
-    [SerializeField] private float curHp;
+    [SerializeField] private float maxHp = 100f;
+    [SerializeField] private float curHp = 100f;
     [SerializeField] private float moveSpeed;
     [SerializeField] private GameObject Boom;
     [SerializeField] private bool isLookRight = false;
@@ -21,8 +23,18 @@ public class Player : MonoBehaviour
     [Header("쓰레기통")]
     [SerializeField] Transform layerDynamic;
 
+    private void OnValidate()
+    {
+        if(playerHp != null)
+        {
+            playerHp.SetPlayerHp(curHp, maxHp);
+        }
+    }
+
     private void Awake()
     {
+        rigid = GetComponent<Rigidbody2D>();
+        playerHp = GetComponent<PlayerHp>();
         anim = GetComponent<Animator>();
         curHp = maxHp;
     }
@@ -36,6 +48,7 @@ public class Player : MonoBehaviour
         moving();
         turning();
         playerAnimation();
+  
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -51,6 +64,7 @@ public class Player : MonoBehaviour
                 {
                     curHp = maxHp;
                 }
+                playerHp.SetPlayerHp(curHp, maxHp);
             }
             else if (itemType == Item.ItemType.WeaponBox)
             {
@@ -58,8 +72,8 @@ public class Player : MonoBehaviour
             }
             Destroy(collision.gameObject);
         }
-    }
 
+    }
     private void moving()
     {
         moveDir.x = Input.GetAxisRaw("Horizontal") * moveSpeed;
@@ -106,7 +120,7 @@ public class Player : MonoBehaviour
         anim.SetInteger("isJump", (int)moveDir.y);
     }
 
-    private void Hit(float Damage)
+    public void Hit(float Damage)
     {
         curHp -= Damage;
         if(curHp <= 0)
@@ -118,4 +132,6 @@ public class Player : MonoBehaviour
             //objSc.SetAnimationSize(sizeWidth);
         }
     }
+
+
 }

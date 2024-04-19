@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    
     Player player;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float bulletDelay = 1.0f;
