@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     private Player player;
-    
+    private PlayerHp playerHp;
 
     private Camera maincam;
 
@@ -29,8 +29,19 @@ public class GameManager : MonoBehaviour
         return player;
     }
 
+
     public void SetPlayer(Player _value)
     {
         player = _value;
+    }
+
+    public PlayerHp GetPlayerHp()
+    {
+        return playerHp;
+    }
+
+    public void SetPlayerHp(PlayerHp _value)
+    {
+        playerHp = _value;
     }
 }

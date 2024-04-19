@@ -7,11 +7,12 @@ using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
+    
     Rigidbody2D rigid;
-    PlayerHp playerHp;
     Vector3 moveDir;
     Animator anim;
     private SpriteRenderer playersr;
+    PlayerHp playerHp;
 
     [Header("플레이어 관련")]
     [SerializeField] private float maxHp = 100f;
@@ -22,19 +23,13 @@ public class Player : MonoBehaviour
 
     [Header("쓰레기통")]
     [SerializeField] Transform layerDynamic;
+    
 
-    private void OnValidate()
-    {
-        if(playerHp != null)
-        {
-            playerHp.SetPlayerHp(curHp, maxHp);
-        }
-    }
 
     private void Awake()
     {
+        playersr = GetComponent<SpriteRenderer>();
         rigid = GetComponent<Rigidbody2D>();
-        playerHp = GetComponent<PlayerHp>();
         anim = GetComponent<Animator>();
         curHp = maxHp;
     }
@@ -42,13 +37,14 @@ public class Player : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.SetPlayer(this);
+        playerHp = GameManager.Instance.GetPlayerHp();
     }
     private void Update()
     {
         moving();
         turning();
         playerAnimation();
-  
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -64,7 +60,6 @@ public class Player : MonoBehaviour
                 {
                     curHp = maxHp;
                 }
-                playerHp.SetPlayerHp(curHp, maxHp);
             }
             else if (itemType == Item.ItemType.WeaponBox)
             {
@@ -123,7 +118,7 @@ public class Player : MonoBehaviour
     public void Hit(float Damage)
     {
         curHp -= Damage;
-        if(curHp <= 0)
+        if (curHp <= 0)
         {
             Destroy(gameObject);
             /*GameObject obj = */Instantiate(Boom, transform.position, Quaternion.identity, layerDynamic);

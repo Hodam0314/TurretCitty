@@ -15,7 +15,7 @@ public class Weapon : MonoBehaviour
     [Header("무기별 이펙트 및 총알")]
     [SerializeField] private GameObject gunBullet;
     [SerializeField] private GameObject rifleBullet;
-    [SerializeField] private GameObject hammerEp;
+    [SerializeField] private GameObject hammerEp;   
     [SerializeField] private GameObject SwordEp;
 
     [Header("무기별 공격력 및 속도")]

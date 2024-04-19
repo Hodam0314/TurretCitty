@@ -5,15 +5,19 @@ using UnityEngine.UI;
 public class PlayerHp : MonoBehaviour
 {
     [SerializeField] Transform trsPlayer;
-    [SerializeField] private Slider playerHp;
+    Slider playerHp;
+    private float _curHp;
+    private float _maxHp;
 
-    private float maxHp = 100;
-    private float curHp = 100;
+    private void Awake()
+    {
+        playerHp = GetComponent<Slider>();
+    }
 
     void Start()
     {
-        playerHp.value = (float)curHp / (float)maxHp;
-
+        GameManager.Instance.SetPlayerHp(this);
+        playerHp.value =  _curHp / _maxHp;
     }
 
 
@@ -21,7 +25,6 @@ public class PlayerHp : MonoBehaviour
     {
         checkPlayerPos();
         checkPlayerHp();
-        
     }
     private void checkPlayerPos()
     {
@@ -32,16 +35,16 @@ public class PlayerHp : MonoBehaviour
         transform.position = trsPlayer.position - new Vector3(0, 0.65f, 0);
 
     }
-    private void checkPlayerHp()
+
+    private void checkPlayerHp()                                                                             
     {
-        playerHp.value = Mathf.Lerp(playerHp.value, (float)curHp / (float)maxHp, Time.deltaTime * 10);
+        playerHp.value = Mathf.Lerp(playerHp.value, _curHp / _maxHp, Time.deltaTime * 10);
     }
 
-    public void SetPlayerHp(float _curHp, float _maxHp)
+    public void getPlayerHp(float plycurHp , float plymaxHp)
     {
-        maxHp = _maxHp;
-        curHp = _curHp;
-
+        _curHp = plycurHp;
+        _maxHp = plymaxHp;
     }
 
 }
