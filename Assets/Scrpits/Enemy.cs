@@ -97,9 +97,10 @@ public class Enemy : MonoBehaviour
         if (mobHp <= 0)
         {
             Destroy(gameObject);
-            Instantiate(Boom, transform.position, Quaternion.identity, layerDynamic);
-            //float sizeWidth = spriteR.sprite.rect.width;
-            //boom.SetAnimationSize(sizeWidth);
+            GameObject obj = Instantiate(Boom, transform.position, Quaternion.identity, layerDynamic);
+            Explosion objSc = obj.GetComponent<Explosion>();
+            float sizeWidth = spriteR.sprite.rect.width;
+            objSc.SetAnimationSize(sizeWidth);
         }
     }
 }

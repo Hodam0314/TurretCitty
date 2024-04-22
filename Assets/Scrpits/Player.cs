@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     Vector3 moveDir;
     Animator anim;
     private SpriteRenderer playersr;
-    PlayerHp playerHp;
+    //PlayerHp playerHp;
 
     [Header("플레이어 관련")]
     [SerializeField] private float maxHp = 100f;
@@ -23,8 +23,15 @@ public class Player : MonoBehaviour
 
     [Header("쓰레기통")]
     [SerializeField] Transform layerDynamic;
-    
 
+
+    //private void OnValidate() // 인스펙터에서 값이 변경되면 이 함수가 호출됨
+    //{
+    //    if (playerHp != null)
+    //    {
+    //        playerHp.getPlayerHp(curHp, maxHp);
+    //    }
+    //}
 
     private void Awake()
     {
@@ -37,7 +44,6 @@ public class Player : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.SetPlayer(this);
-        playerHp = GameManager.Instance.GetPlayerHp();
     }
     private void Update()
     {
@@ -85,6 +91,7 @@ public class Player : MonoBehaviour
         transform.position += new Vector3(moveDir.x, moveDir.y, 0) * Time.deltaTime;
     }
 
+    #region 플레이어 방향전환
     private void turning()
     {
         //if (moveDir.x < 0 && transform.localScale.x < 1)
@@ -108,12 +115,15 @@ public class Player : MonoBehaviour
             transform.eulerAngles = new Vector3(0, -180.0f, 0);
         }
     }
+    #endregion
 
+    #region 플레이어 애니메이션 코드
     private void playerAnimation()
     {
         anim.SetInteger("isMoving", (int)moveDir.x);
         anim.SetInteger("isJump", (int)moveDir.y);
     }
+    #endregion
 
     public void Hit(float Damage)
     {
@@ -121,12 +131,15 @@ public class Player : MonoBehaviour
         if (curHp <= 0)
         {
             Destroy(gameObject);
-            /*GameObject obj = */Instantiate(Boom, transform.position, Quaternion.identity, layerDynamic);
-            //Explosion objSc = obj.GetComponent<Explosion>();
-            //float sizeWidth = playersr.sprite.rect.width;
-            //objSc.SetAnimationSize(sizeWidth);
+            GameObject obj = Instantiate(Boom, transform.position, Quaternion.identity, layerDynamic);
+            Explosion objSc = obj.GetComponent<Explosion>();
+            float sizeWidth = playersr.sprite.rect.width;
+            objSc.SetAnimationSize(sizeWidth);
         }
     }
 
-
+    public (float _cur, float _max) GetPlayerHp() //튜플 , 2개이상의 값을 밖으로 전달
+    {
+        return (curHp, maxHp);
+    }
 }

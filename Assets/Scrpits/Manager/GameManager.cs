@@ -5,8 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    private Player player;
-    private PlayerHp playerHp;
+    private Player player;//플레이어를 알고 나중에 생성되는 모든 오브젝트가 플레이어가 필요하다면 가져올수 있게 해줌
 
     private Camera maincam;
 
@@ -35,13 +34,4 @@ public class GameManager : MonoBehaviour
         player = _value;
     }
 
-    public PlayerHp GetPlayerHp()
-    {
-        return playerHp;
-    }
-
-    public void SetPlayerHp(PlayerHp _value)
-    {
-        playerHp = _value;
-    }
 }
