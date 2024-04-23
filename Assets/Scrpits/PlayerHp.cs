@@ -39,7 +39,7 @@ public class PlayerHp : MonoBehaviour
 
         Vector3 screenPos = camMain.WorldToScreenPoint(player.transform.position);
 
-        transform.position = screenPos - new Vector3(0, 0.65f, 0);
+        transform.position = screenPos - new Vector3(0, -45f, 0);
 
     }
 

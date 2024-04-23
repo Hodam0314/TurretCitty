@@ -8,7 +8,6 @@ public class Bullet : MonoBehaviour
     
     Player player;
     [SerializeField] private float bulletSpeed;
-    [SerializeField] private float bulletDelay = 1.0f;
     [SerializeField] private float damage = 0.0f;
     private bool playerBullet = false;
     private bool turretBullet = false;
@@ -40,11 +39,11 @@ public class Bullet : MonoBehaviour
 
     private void moving()
     {
-        if(transform.rotation.y == 0)
+        if(transform.eulerAngles.y == 0) //x y z = eulerAngles를 이용해서 각도설정 가능.
         {
-        transform.Translate(transform.right  * bulletSpeed * Time.deltaTime);
+            transform.Translate(transform.right  * bulletSpeed * Time.deltaTime);
         }
-        else if(transform.rotation.y == 180)
+        else if(transform.eulerAngles.y == 180)
         {
             transform.Translate(transform.right * -1 * bulletSpeed * Time.deltaTime);
         }
