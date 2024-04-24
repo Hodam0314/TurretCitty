@@ -28,6 +28,7 @@ public class Bullet : MonoBehaviour
         {
             Enemy enemySc = collision.GetComponent<Enemy>();
             Destroy(gameObject);
+            enemySc.checkBullet();
             enemySc.Hit(damage);
         }
     }
