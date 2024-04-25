@@ -10,7 +10,6 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float damage = 0.0f;
     private bool playerBullet = false;
-    private bool turretBullet = false;
     private bool isright = false;
 
     private void Start()
