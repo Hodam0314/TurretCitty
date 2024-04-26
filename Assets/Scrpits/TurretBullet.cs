@@ -38,13 +38,9 @@ public class TurretBullet : MonoBehaviour
 
     private void Update()
     {
-        moving();
+    transform.position += transform.right * Time.deltaTime * bulletSpeed;
     }
 
-    private void moving()
-    {
-        rigid.velocity = dir * bulletSpeed;
-    }
     private void OnBecameInvisible()
     {
         Destroy(gameObject);
