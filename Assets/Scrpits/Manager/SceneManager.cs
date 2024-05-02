@@ -8,15 +8,19 @@ public enum enumScene
 {
     GameScene,
     StartScene,
-    HelpScene,
+    EndScene,
+    ClearScene,
 }
 public class ScenceManager : MonoBehaviour
 {
 
 
     [SerializeField] Button btnStart;
-    [SerializeField] Button btnHelp;
+    [SerializeField] Button btnSetting;
     [SerializeField] Button btnEnd;
+    [SerializeField] Button checkEndYes;
+    [SerializeField] Button checkEndNo;
+    [SerializeField] GameObject checkEnd;
     void Awake()
     {
         btnStart.onClick.AddListener(() =>
@@ -26,17 +30,29 @@ public class ScenceManager : MonoBehaviour
 
         });
 
-        btnHelp.onClick.AddListener(() =>
+        btnEnd.onClick.AddListener(() =>
         {
 
-            SceneManager.LoadSceneAsync((int)enumScene.HelpScene);
+            checkEnd.SetActive(true);
+            btnSetting.interactable = false;
+            btnEnd.interactable = false;
+            btnStart.interactable = false;
+
         });
 
-        btnEnd.onClick.AddListener(() =>
+        checkEndYes.onClick.AddListener(() =>
         {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #endif
+        });
+
+        checkEndNo.onClick.AddListener(() =>
+        {
+            checkEnd.SetActive(false);
+            btnSetting.interactable = true;
+            btnEnd.interactable = true;
+            btnStart.interactable = true;
         });
 
     }

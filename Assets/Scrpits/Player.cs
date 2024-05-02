@@ -7,7 +7,7 @@ using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
-    
+   
     Rigidbody2D rigid;
     Vector3 moveDir;
     Animator anim;
@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     [Header("쓰레기통")]
     [SerializeField] Transform layerDynamic;
 
-
+    #region 싱글턴 예시
     //private void OnValidate() // 인스펙터에서 값이 변경되면 이 함수가 호출됨
     //{
     //    if (playerHp != null)
@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
     //        playerHp.getPlayerHp(curHp, maxHp);
     //    }
     //}
+    #endregion
 
     private void Awake()
     {
@@ -50,7 +51,6 @@ public class Player : MonoBehaviour
         moving();
         turning();
         playerAnimation();
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -135,8 +135,10 @@ public class Player : MonoBehaviour
             Explosion objSc = obj.GetComponent<Explosion>();
             float sizeWidth = playersr.sprite.rect.width;
             objSc.SetAnimationSize(sizeWidth);
+            GameManager.Instance.GameOver();
         }
     }
+
 
     public (float _cur, float _max) GetPlayerHp() //튜플 , 2개이상의 값을 밖으로 전달
     {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class GameManager : MonoBehaviour
     private Player player;//플레이어를 알고 나중에 생성되는 모든 오브젝트가 플레이어가 필요하다면 가져올수 있게 해줌
     private Turret turret;
     private Camera maincam;
+
+    float playerdeathtimecheck = 3f;
+    float playerdeathtime;
+
 
     private void Awake()
     {
@@ -22,6 +27,12 @@ public class GameManager : MonoBehaviour
 
         maincam = GetComponent<Camera>();
     }
+
+    private void Update()
+    {
+
+    }
+
 
     public Player GetPlayer()
     {
@@ -42,5 +53,18 @@ public class GameManager : MonoBehaviour
     {
         turret = _value;
     }
+
+    public void GameOver()
+    {
+        SceneManager.LoadSceneAsync((int)enumScene.EndScene);
+    }
+
+    public void GameClear()
+    {
+        SceneManager.LoadSceneAsync((int)enumScene.ClearScene);
+    }
+
+
+
 
 }
