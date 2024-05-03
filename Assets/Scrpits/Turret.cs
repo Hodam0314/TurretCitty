@@ -9,7 +9,8 @@ public class Turret : MonoBehaviour
 
   [Header("≈Õ∑ø º≥¡§")]
   [SerializeField] GameObject bullet;
-  [SerializeField] float turretHp = 5f;
+  [SerializeField] float turretmaxHp = 5f;
+  [SerializeField] float turretcurHp;
   [SerializeField] GameObject explosion;
   [SerializeField] Transform layerDynamic;
   [SerializeField] float scanRange;
@@ -34,6 +35,7 @@ public class Turret : MonoBehaviour
   {
     GameManager.Instance.SetTurret(this);
     closetarget = Getclosetarget();
+    turretcurHp = turretmaxHp;
   }
 
   private void Update()
@@ -75,8 +77,8 @@ public class Turret : MonoBehaviour
 
   private void Hit(float _damage)
   {
-    turretHp -= _damage;
-    if (turretHp <= 0f)
+    turretcurHp -= _damage;
+    if (turretcurHp <= 0f)
     {
       Destroy(gameObject);
       GameObject obj = Instantiate(explosion, transform.position, Quaternion.identity, layerDynamic);
@@ -138,5 +140,10 @@ public class Turret : MonoBehaviour
   //  TurretBullet bulletsc = bullet.GetComponent<TurretBullet>();
   //  bulletsc.GetPos(passDir);
   //}
+
+    public(float _curHp , float _maxHp) GetTurretHp()
+    {
+        return (turretcurHp, turretmaxHp);
+    }
 
 }

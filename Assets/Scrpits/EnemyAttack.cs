@@ -16,6 +16,13 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == GameTag.Player.ToString())
+        {
+            checkEnemy = false;
+        }
+    }
 
 }
 

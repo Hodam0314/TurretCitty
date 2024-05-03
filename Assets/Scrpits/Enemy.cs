@@ -18,6 +18,9 @@ public class Enemy : MonoBehaviour
     private float movingtimer = 0.5f;
     private SpriteRenderer spriteR;
     private bool bulletattack = false;
+    private bool isattack = false;
+    private float enemytime;
+    private float enemytimer = 1f;
 
     Vector3 dir;
 
@@ -27,7 +30,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject Boom;
     [SerializeField] Transform layerDynamic;
     [SerializeField] GameObject attackCheck;
-    [SerializeField] private float attacktimer = 3f;
+    [SerializeField] private float attacktimer = 5f;
     [SerializeField] GameObject bulletHit;
     //GameObject player;
     GameObject player;
@@ -90,6 +93,7 @@ public class Enemy : MonoBehaviour
         moving();
         turning();
         attack();
+        checkattack();
     }
 
     private void moving()
@@ -140,7 +144,6 @@ public class Enemy : MonoBehaviour
     {
         if(enemyAttack.checkEnemy == true)
         {
-
             attackcool += Time.deltaTime;
             if (attackcool >= attacktimer)
             {
@@ -151,13 +154,31 @@ public class Enemy : MonoBehaviour
             dir.Normalize();
             rigid.AddForce(dir*7, ForceMode2D.Impulse); //AddForce 사용법 , ForceMode2D 중 Impulse = 한번에 확 밀어내는 힘 , Force = 지긋이 밀어주는 힘
                 attackcool = 0f;
-
+                isattack = true;
             }
         }
+
+
     }
 
     public void checkBullet()
     {
         bulletattack = true;
     }
+
+    private void checkattack()
+    {
+        if(isattack == true)
+        {
+            enemytime += Time.deltaTime;
+            if(enemytime >= enemytimer)
+            {
+                rigid.velocity = Vector2.zero;
+                enemytime = 0f;
+                isattack = false;
+            }
+
+        }
+    }
+
 }

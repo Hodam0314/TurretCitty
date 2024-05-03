@@ -8,4 +8,5 @@ public enum GameTag
     Enemy,
     Item,
     Weapon,
+    TurretEnemy,
 }

@@ -128,6 +128,7 @@ public class Player : MonoBehaviour
     public void Hit(float Damage)
     {
         curHp -= Damage;
+       
         if (curHp <= 0)
         {
             Destroy(gameObject);
