@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -112,10 +112,19 @@ public class GameManager : MonoBehaviour
 
     private void GetMainButton()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            MenuMain.SetActive(true);
-            menuOn = true;
+            if (MenuMain.activeSelf == true)
+            {
+                MenuMain.SetActive(false);
+            }
+            else
+            {
+                MenuMain.SetActive(true);
+            }
+
+
+
         }
     }
 
