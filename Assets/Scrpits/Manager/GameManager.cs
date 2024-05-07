@@ -19,6 +19,24 @@ public class GameManager : MonoBehaviour
     [SerializeField] Button ExitYes;
     [SerializeField] Button ExitNo;
 
+    [Header("적기 생성")]
+    [SerializeField] List<GameObject> Enemylist;
+    [SerializeField] List<GameObject> SpawnPoint;
+    [SerializeField] private float spawnCool = 3f;
+    [SerializeField] bool enemySpawn = false;
+    private float spawnTime = 0f;
+
+    [Header("적 생성 레벨")]
+    [SerializeField] private float SpawnLevel = 0f;
+    [SerializeField] private float SpawnCount = 0f;
+    [SerializeField] private float TotalSpawn = 0f;
+
+    [Header("아이템 생성")]
+    [SerializeField, Range(0f, 100f)] float DropRate = 0f;
+    [SerializeField] private List<GameObject> ItemList;
+
+    [Header("레이어 처리")]
+    [SerializeField] Transform layerEnemySpawn;
 
     public static GameManager Instance;
     private Player player;//플레이어를 알고 나중에 생성되는 모든 오브젝트가 플레이어가 필요하다면 가져올수 있게 해줌
@@ -42,6 +60,7 @@ public class GameManager : MonoBehaviour
 
         maincam = GetComponent<Camera>();
 
+        #region 버튼기능
         Main.onClick.AddListener(() =>
         {
             MenuMain.SetActive(true);
@@ -71,15 +90,19 @@ public class GameManager : MonoBehaviour
         {
             checkExit.SetActive(false);
         });
+        #endregion
 
     }
 
     private void Update()
     {
         GetMainButton();
+        CheckEnemySpawn();
+
+
     }
 
-
+    #region 싱글턴 활용
     public Player GetPlayer()
     {
         return player;
@@ -99,6 +122,7 @@ public class GameManager : MonoBehaviour
     {
         turret = _value;
     }
+    #endregion
 
     public void GameOver()
     {
@@ -109,6 +133,7 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadSceneAsync((int)enumScene.ClearScene);
     }
+
 
     private void GetMainButton()
     {
@@ -122,12 +147,61 @@ public class GameManager : MonoBehaviour
             {
                 MenuMain.SetActive(true);
             }
+        }
+    }
+
+    private void CheckEnemySpawn()
+    {
+        spawnTime += Time.deltaTime;
+        if (spawnTime >= spawnCool)
+        {
+            SpawnEnemy();
+            CheckSpawn();
+            spawnTime = 0.0f;
+        }
 
 
+
+    }
+
+    private void SpawnEnemy()
+    {
+        if (enemySpawn == true)
+        {
+            int spawnE = Random.Range(0, Enemylist.Count);
+            GameObject objEnemy = Enemylist[spawnE];
+
+            int spawnP = Random.Range(0, SpawnPoint.Count);
+            GameObject spawnPoint = SpawnPoint[spawnP];
+
+
+            GameObject obj = Instantiate(objEnemy, spawnPoint.transform.position, Quaternion.identity, layerEnemySpawn);
+            Enemy objSc = obj.GetComponent<Enemy>();
+
+            float range = Random.Range(0f, 100f);
+            if (range <= DropRate)
+            {
+                objSc.GetItem();
+            }
 
         }
     }
 
+    private void CheckSpawn()
+    {
+        SpawnCount++;
+        TotalSpawn++;
+        if (SpawnCount == 20)
+        {
+            SpawnLevel++;
+            SpawnCount = 0;
+        }
+        else
+        {
+            return;
+        }
 
+
+    }
 
 }

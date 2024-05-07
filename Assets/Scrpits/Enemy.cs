@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour
     Vector3 dir;
 
     private float moveTimer = 3f;
+    [Header("몬스터 설정")]
     [SerializeField] private float mobHp = 10f;
     [SerializeField] private float damage = 5f;
     [SerializeField] private GameObject Boom;
@@ -32,9 +33,15 @@ public class Enemy : MonoBehaviour
     [SerializeField] GameObject attackCheck;
     [SerializeField] private float attacktimer = 5f;
     [SerializeField] GameObject bulletHit;
+    [SerializeField] private bool haveItem = false;
     //GameObject player;
     GameObject player;
     EnemyAttack enemyAttack;
+
+    [Header("드롭 아이템")]
+    [SerializeField] GameObject Heal;
+    [SerializeField] GameObject Speed;
+    [SerializeField] GameObject Weapon;
 
     //private void OnTriggerEnter2D(Collider2D collision)
     //{
@@ -179,6 +186,17 @@ public class Enemy : MonoBehaviour
             }
 
         }
+    }
+
+    public void GetItem()
+    {
+        haveItem = true;
+    }
+
+    public void SpawnLevelUp()
+    {
+        mobHp += 10f;
+        damage += 3f;
     }
 
 }

@@ -67,10 +67,6 @@ public class Player : MonoBehaviour
                     curHp = maxHp;
                 }
             }
-            else if (itemType == Item.ItemType.WeaponBox)
-            {
-
-            }
             Destroy(collision.gameObject);
         }
 

@@ -8,18 +8,11 @@ public class Item : MonoBehaviour
     public enum ItemType
     {
         Hp,
-        WeaponBox,
+        Speed,
         Coin,
-        Weapon,
     }
 
     [SerializeField] ItemType itemType;
-
-
-    private void Update()
-    {
-        transform.position = transform.position;
-    }
 
     public ItemType GetItemType()
     {
