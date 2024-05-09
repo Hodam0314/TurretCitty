@@ -107,6 +107,10 @@ MonoBehaviour:
   attackCheck: {fileID: 4564677052535044910}
   attacktimer: 3
   bulletHit: {fileID: 1306307446756071667, guid: a2a58899309e2e14790e03fb3960e33b, type: 3}
+  haveItem: 0
+  Slime: 1
+  Shark: 0
+  dmgtext: {fileID: 3247727335768242852, guid: a092ec9e1e5f72d41b7489b75ffde02c, type: 3}
 --- !u!61 &5691661378723471467
 BoxCollider2D:
   m_ObjectHideFlags: 0

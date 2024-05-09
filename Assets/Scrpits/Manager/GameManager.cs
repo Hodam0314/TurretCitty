@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -37,11 +38,17 @@ public class GameManager : MonoBehaviour
 
     [Header("레이어 처리")]
     [SerializeField] Transform layerEnemySpawn;
+    [SerializeField] Transform layerItemList;
+
+    [Header("플레이어 관련")]
+    [SerializeField] TMP_Text moneytext;
 
     public static GameManager Instance;
     private Player player;//플레이어를 알고 나중에 생성되는 모든 오브젝트가 플레이어가 필요하다면 가져올수 있게 해줌
     private Turret turret;
     private Camera maincam;
+    private float playermoney;
+
 
     float playerdeathtimecheck = 3f;
     float playerdeathtime;
@@ -98,7 +105,7 @@ public class GameManager : MonoBehaviour
     {
         GetMainButton();
         CheckEnemySpawn();
-
+        updatemoney();
 
     }
 
@@ -202,6 +209,24 @@ public class GameManager : MonoBehaviour
         }
 
 
+    }
+
+    public void CreateGameItem(Vector3 Pos)
+    {
+        int iRand = Random.Range(0, ItemList.Count);
+        GameObject itemrange = ItemList[iRand];
+
+        Instantiate(itemrange, Pos, Quaternion.identity, layerItemList);
+    }
+
+    public void checkmoney(float _money)
+    {
+        playermoney = _money;
+    }
+
+    private void updatemoney()
+    {
+        moneytext.text = $"X {(int)playermoney}";
     }
 
 }

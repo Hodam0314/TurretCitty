@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
 
@@ -38,10 +39,15 @@ public class Enemy : MonoBehaviour
     GameObject player;
     EnemyAttack enemyAttack;
 
-    [Header("드롭 아이템")]
-    [SerializeField] GameObject Heal;
-    [SerializeField] GameObject Speed;
-    [SerializeField] GameObject Weapon;
+    [Header("몬스터 타입")]
+    [SerializeField] private bool Slime;
+    [SerializeField] private bool Shark;
+
+    [Header("피격 텍스트")]
+    [SerializeField] Transform Canvas;
+    [SerializeField] private GameObject dmgtext;
+
+
 
     //private void OnTriggerEnter2D(Collider2D collision)
     //{
@@ -67,6 +73,7 @@ public class Enemy : MonoBehaviour
         boom = GetComponent<Explosion>();
         spriteR = GetComponent<SpriteRenderer>();
         rigid = GetComponent<Rigidbody2D>();
+        
     }
 
     private void Start()
@@ -99,7 +106,7 @@ public class Enemy : MonoBehaviour
 
         moving();
         turning();
-        attack();
+        slimeattack();
         checkattack();
     }
 
@@ -132,6 +139,10 @@ public class Enemy : MonoBehaviour
     public void Hit(float _damage)
     {
         mobHp -= _damage;
+        StartCoroutine(enemyhit());
+        GameObject text = Instantiate(dmgtext, transform.position, Quaternion.identity, Canvas);
+        text.GetComponent<Damage>().SetDamage(_damage);
+
         if(bulletattack == true)
         {
         Instantiate(bulletHit, transform.position, Quaternion.identity, layerDynamic);
@@ -144,12 +155,28 @@ public class Enemy : MonoBehaviour
             Explosion objSc = obj.GetComponent<Explosion>();
             float sizeWidth = spriteR.sprite.rect.width;
             objSc.SetAnimationSize(sizeWidth);
+
+            if (haveItem == true)
+            {
+                GameManager.Instance.CreateGameItem(transform.position);
+            }
         }
     }
 
-    private void attack()
+    IEnumerator enemyhit()
     {
-        if(enemyAttack.checkEnemy == true)
+        for(int i = 0; i <= 2; i++)
+        {
+        yield return new WaitForSeconds(0.1f);
+        spriteR.color = new Color(1, 1, 1, 0.5f);
+        yield return new WaitForSeconds(0.1f);
+        spriteR.color = new Color(1, 1, 1, 1);
+        }
+    }
+
+    private void slimeattack()
+    {
+        if(enemyAttack.checkEnemy == true && Slime == true)
         {
             attackcool += Time.deltaTime;
             if (attackcool >= attacktimer)
@@ -191,6 +218,7 @@ public class Enemy : MonoBehaviour
     public void GetItem()
     {
         haveItem = true;
+        spriteR.color = new Color(1, 0.3f, 1, 1);
     }
 
     public void SpawnLevelUp()

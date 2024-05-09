@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     Animator anim;
     private SpriteRenderer playersr;
     //PlayerHp playerHp;
+    private bool isHit;
+    private Sprite playersrDefault;
 
     [Header("플레이어 관련")]
     [SerializeField] private float maxHp = 100f;
@@ -20,6 +22,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private GameObject Boom;
     [SerializeField] private bool isLookRight = false;
+    [SerializeField] private float money = 0f;
 
     [Header("쓰레기통")]
     [SerializeField] Transform layerDynamic;
@@ -40,6 +43,8 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         curHp = maxHp;
+
+        playersrDefault = playersr.sprite;
     }
 
     private void Start()
@@ -51,6 +56,7 @@ public class Player : MonoBehaviour
         moving();
         turning();
         playerAnimation();
+        sendmoney();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -67,6 +73,25 @@ public class Player : MonoBehaviour
                     curHp = maxHp;
                 }
             }
+            else if (itemType == Item.ItemType.Speed)
+            {
+                moveSpeed += 1f;
+                if(moveSpeed >= 10)
+                {
+                    moveSpeed = 10;
+                }
+            }
+
+            else if(itemType == Item.ItemType.Coin)
+            {
+                money += 100f;
+                if(money >= 9999)
+                {
+                    money = 9999;
+                }
+
+            }
+
             Destroy(collision.gameObject);
         }
 
@@ -123,8 +148,10 @@ public class Player : MonoBehaviour
 
     public void Hit(float Damage)
     {
+        if(!isHit)
+        {
+        isHit = true;
         curHp -= Damage;
-       
         if (curHp <= 0)
         {
             Destroy(gameObject);
@@ -134,11 +161,45 @@ public class Player : MonoBehaviour
             objSc.SetAnimationSize(sizeWidth);
             GameManager.Instance.GameOver();
         }
+            else
+            {
+                StartCoroutine(Hitcheck());
+                StartCoroutine(hitEffect());
+            }
+
+        }
+    }
+    
+    IEnumerator Hitcheck()
+    {
+        yield return new WaitForSeconds(5f);
+        isHit = false;
     }
 
+    IEnumerator hitEffect()
+    {
+        while (isHit)
+        {
+        yield return new WaitForSeconds(0.1f);
+        playersr.color = new Color(1, 1, 1, 0.5f);
+        yield return new WaitForSeconds(0.1f);
+            playersr.color = new Color(1, 1, 1, 1);
+        }
+        setSprite();
+    }
+
+    private void setSprite()
+    {
+        playersr.sprite = playersrDefault;
+    }
 
     public (float _cur, float _max) GetPlayerHp() //튜플 , 2개이상의 값을 밖으로 전달
     {
         return (curHp, maxHp);
+    }
+
+    private void sendmoney()
+    {
+        GameManager.Instance.checkmoney(money);
     }
 }
