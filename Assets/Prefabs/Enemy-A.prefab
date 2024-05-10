@@ -110,6 +110,7 @@ MonoBehaviour:
   haveItem: 0
   Slime: 1
   Shark: 0
+  Canvas: {fileID: 0}
   dmgtext: {fileID: 3247727335768242852, guid: a092ec9e1e5f72d41b7489b75ffde02c, type: 3}
 --- !u!61 &5691661378723471467
 BoxCollider2D:

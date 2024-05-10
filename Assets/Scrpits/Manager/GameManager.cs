@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
     private Turret turret;
     private Camera maincam;
     private float playermoney;
+    private Shop shop;
 
 
     float playerdeathtimecheck = 3f;
@@ -129,6 +130,17 @@ public class GameManager : MonoBehaviour
     {
         turret = _value;
     }
+
+    public Shop GetShop()
+    {
+        return shop;
+    }
+
+    public void SetShop(Shop _value)
+    {
+        shop = _value;
+    }
+
     #endregion
 
     public void GameOver()

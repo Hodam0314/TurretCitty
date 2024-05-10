@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
 
     Rigidbody2D rigid;
     Explosion boom;
+    Camera maincam;
     private bool isPlayer = false;
     private bool isMoving = false;
     private float moveSpeed = 3f;
@@ -22,6 +23,7 @@ public class Enemy : MonoBehaviour
     private bool isattack = false;
     private float enemytime;
     private float enemytimer = 1f;
+    private Vector3 worldpos;
 
     Vector3 dir;
 
@@ -73,6 +75,7 @@ public class Enemy : MonoBehaviour
         boom = GetComponent<Explosion>();
         spriteR = GetComponent<SpriteRenderer>();
         rigid = GetComponent<Rigidbody2D>();
+        maincam = Camera.main;
         
     }
 
@@ -140,10 +143,15 @@ public class Enemy : MonoBehaviour
     {
         mobHp -= _damage;
         StartCoroutine(enemyhit());
-        GameObject text = Instantiate(dmgtext, transform.position, Quaternion.identity, Canvas);
-        text.GetComponent<Damage>().SetDamage(_damage);
+        worldpos = maincam.WorldToScreenPoint(transform.position);
+        GameObject text = Instantiate(dmgtext, worldpos, Quaternion.identity,Canvas);
+        Damage dmg = text.GetComponent<Damage>();
+        dmg.SetDamage(_damage);
+        dmg.SetPos(worldpos);
 
-        if(bulletattack == true)
+
+
+        if (bulletattack == true)
         {
         Instantiate(bulletHit, transform.position, Quaternion.identity, layerDynamic);
         bulletattack = false;
@@ -226,5 +234,6 @@ public class Enemy : MonoBehaviour
         mobHp += 10f;
         damage += 3f;
     }
+
 
 }
