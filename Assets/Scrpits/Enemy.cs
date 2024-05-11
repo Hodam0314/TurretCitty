@@ -146,8 +146,7 @@ public class Enemy : MonoBehaviour
         worldpos = maincam.WorldToScreenPoint(transform.position);
         GameObject text = Instantiate(dmgtext, worldpos, Quaternion.identity,Canvas);
         Damage dmg = text.GetComponent<Damage>();
-        dmg.SetDamage(_damage);
-        dmg.SetPos(worldpos);
+        dmg.SetDamage(_damage, transform.position);
 
 
 

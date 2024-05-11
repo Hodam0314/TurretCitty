@@ -61,42 +61,47 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == GameTag.Item.ToString())
+        if (collision.gameObject.tag == GameTag.Item.ToString()) //아이템을 먹었을경우 작동되는 코드
         {
-            Item itemSc = collision.GetComponent<Item>();
-            Item.ItemType itemType = itemSc.GetItemType();
-            if (itemType == Item.ItemType.Hp)
-            {
-                curHp += 3f;
-                if(curHp > maxHp)
-                {
-                    curHp = maxHp;
-                }
-            }
-            else if (itemType == Item.ItemType.Speed)
-            {
-                moveSpeed += 1f;
-                if(moveSpeed >= 10)
-                {
-                    moveSpeed = 10;
-                }
-            }
+            #region 플레이어가 아이템먹으면 바로 적용하던코드
+            //Item itemSc = collision.GetComponent<Item>();
+            //Item.ItemType itemType = itemSc.GetItemType();
+            //if (itemType == Item.ItemType.Hp)
+            //{
+            //    curHp += 3f;
+            //    if(curHp > maxHp)
+            //    {
+            //        curHp = maxHp;
+            //    }
+            //}
+            //else if (itemType == Item.ItemType.Speed)
+            //{
+            //    moveSpeed += 1f;
+            //    if(moveSpeed >= 10)
+            //    {
+            //        moveSpeed = 10;
+            //    }
+            //}
 
-            else if(itemType == Item.ItemType.Coin)
-            {
-                money += 100f;
-                if(money >= 9999)
-                {
-                    money = 9999;
-                }
+            //else if(itemType == Item.ItemType.Coin)
+            //{
+            //    money += 100f;
+            //    if(money >= 9999)
+            //    {
+            //        money = 9999;
+            //    }
 
-            }
+            //}
 
-            Destroy(collision.gameObject);
+            //Destroy(collision.gameObject);
+            #endregion
+            Item itemsc = collision.gameObject.GetComponent<Item>();
+            itemsc.GetItem();
+            
         }
 
     }
-    private void moving()
+    private void moving() //키보드로 값을 입력받아 플레이어를 움직여주는 코드
     {
         moveDir.x = Input.GetAxisRaw("Horizontal") * moveSpeed;
         moveDir.y = Input.GetAxisRaw("Vertical") * moveSpeed;
@@ -113,7 +118,7 @@ public class Player : MonoBehaviour
     }
 
     #region 플레이어 방향전환
-    private void turning()
+    private void turning() //플레이어 스프라이트의 방향전환을 도와주는 코드
     {
         //if (moveDir.x < 0 && transform.localScale.x < 1)
         //{
@@ -139,14 +144,14 @@ public class Player : MonoBehaviour
     #endregion
 
     #region 플레이어 애니메이션 코드
-    private void playerAnimation()
+    private void playerAnimation() //애니메이션 작동에 필요한 함수값을 받아주는 코드
     {
         anim.SetInteger("isMoving", (int)moveDir.x);
         anim.SetInteger("isJump", (int)moveDir.y);
     }
     #endregion
 
-    public void Hit(float Damage)
+    public void Hit(float Damage) //플레이어가 피해를 입었을때 동작해주는 코드
     {
         if(!isHit)
         {
@@ -170,13 +175,13 @@ public class Player : MonoBehaviour
         }
     }
     
-    IEnumerator Hitcheck()
+    IEnumerator Hitcheck() //코루틴을 활용한 일정시간 무적
     {
         yield return new WaitForSeconds(5f);
         isHit = false;
     }
 
-    IEnumerator hitEffect()
+    IEnumerator hitEffect() //코루틴을 활용한 플레이어의 피해반환 이미지 변경
     {
         while (isHit)
         {
@@ -188,17 +193,17 @@ public class Player : MonoBehaviour
         setSprite();
     }
 
-    private void setSprite()
+    private void setSprite() //플레이어가 피해를입고 정상이 되었을때 스프라이트 변경해주는 코드
     {
         playersr.sprite = playersrDefault;
     }
 
-    public (float _cur, float _max) GetPlayerHp() //튜플 , 2개이상의 값을 밖으로 전달
+    public (float _cur, float _max) GetPlayerHp() //튜플 , 2개이상의 값을 밖으로 전달 , 플레이어의 체력을 HP바에게 전달해주는 코드
     {
         return (curHp, maxHp);
     }
 
-    private void sendmoney()
+    private void sendmoney() //플레이어의 돈 상태를 게임매니저에게 알려주는 코드
     {
         GameManager.Instance.checkmoney(money);
     }

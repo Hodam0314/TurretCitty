@@ -49,7 +49,8 @@ public class GameManager : MonoBehaviour
     private Camera maincam;
     private float playermoney;
     private Shop shop;
-
+    private InventoryManager inventory;
+    private bool checkInven = false;
 
     float playerdeathtimecheck = 3f;
     float playerdeathtime;
@@ -71,7 +72,12 @@ public class GameManager : MonoBehaviour
         #region 버튼기능
         Main.onClick.AddListener(() =>
         {
+            if(checkInven == false)
+            {
             MenuMain.SetActive(true);
+            InventoryManager.Instance.ActiveMenu();
+                Time.timeScale = 0.0f;
+            }
         });
 
         MainStart.onClick.AddListener(() =>
@@ -141,6 +147,16 @@ public class GameManager : MonoBehaviour
         shop = _value;
     }
 
+    public InventoryManager GetInven()
+    {
+        return inventory;
+    }
+
+    public void SetInven(InventoryManager _value)
+    {
+        inventory = _value;
+    }
+
     #endregion
 
     public void GameOver()
@@ -156,15 +172,19 @@ public class GameManager : MonoBehaviour
 
     private void GetMainButton()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && checkInven == false) 
         {
             if (MenuMain.activeSelf == true)
             {
                 MenuMain.SetActive(false);
+                InventoryManager.Instance.DisableMenu();
+                Time.timeScale = 1.0f;
             }
             else
             {
                 MenuMain.SetActive(true);
+                InventoryManager.Instance.ActiveMenu();
+                Time.timeScale = 0.0f;
             }
         }
     }
@@ -239,6 +259,16 @@ public class GameManager : MonoBehaviour
     private void updatemoney()
     {
         moneytext.text = $"X {(int)playermoney}";
+    }
+
+    public void ActiveInven()
+    {
+        checkInven = true;
+    }
+
+    public void DisableInven()
+    {
+        checkInven = false;
     }
 
 }

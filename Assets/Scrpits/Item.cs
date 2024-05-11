@@ -13,6 +13,30 @@ public class Item : MonoBehaviour
     }
 
     [SerializeField] ItemType itemType;
+    SpriteRenderer sr;
+    Sprite sprite;
+
+
+
+
+    private void Awake()
+    {
+        sr = GetComponent<SpriteRenderer>();
+        sprite = sr.sprite;
+        
+    }
+
+    public void GetItem()
+    {
+        if (InventoryManager.Instance.GetItem(sprite))
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Debug.Log("인벤토리가 가득 찼습니다");
+        }
+    }
 
     public ItemType GetItemType()
     {
