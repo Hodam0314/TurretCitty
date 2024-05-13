@@ -102,4 +102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34fb02d271d222842b15cd1c2cf23225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  btn: {fileID: 947050184574531525, guid: 89bf4b4e12c1ef84eb99e7a707a5bb84, type: 3}
   img: {fileID: 3092659231564032144}
+  itemType: 0

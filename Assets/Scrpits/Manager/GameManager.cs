@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
     private Camera maincam;
     private float playermoney;
     private Shop shop;
-    private InventoryManager inventory;
+    private Inventory inventory;
     private bool checkInven = false;
 
     float playerdeathtimecheck = 3f;
@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
             if(checkInven == false)
             {
             MenuMain.SetActive(true);
-            InventoryManager.Instance.ActiveMenu();
+            Inventory.Instance.ActiveMenu();
                 Time.timeScale = 0.0f;
             }
         });
@@ -147,12 +147,12 @@ public class GameManager : MonoBehaviour
         shop = _value;
     }
 
-    public InventoryManager GetInven()
+    public Inventory GetInven()
     {
         return inventory;
     }
 
-    public void SetInven(InventoryManager _value)
+    public void SetInven(Inventory _value)
     {
         inventory = _value;
     }
@@ -177,13 +177,13 @@ public class GameManager : MonoBehaviour
             if (MenuMain.activeSelf == true)
             {
                 MenuMain.SetActive(false);
-                InventoryManager.Instance.DisableMenu();
+                Inventory.Instance.DisableMenu();
                 Time.timeScale = 1.0f;
             }
             else
             {
                 MenuMain.SetActive(true);
-                InventoryManager.Instance.ActiveMenu();
+                Inventory.Instance.ActiveMenu();
                 Time.timeScale = 0.0f;
             }
         }
@@ -270,5 +270,7 @@ public class GameManager : MonoBehaviour
     {
         checkInven = false;
     }
+
+
 
 }

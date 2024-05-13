@@ -99,6 +99,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemType: 2
+  isHp: 0
+  isSpeed: 0
+  isCoin: 1
 --- !u!61 &4892840032930486039
 BoxCollider2D:
   m_ObjectHideFlags: 0

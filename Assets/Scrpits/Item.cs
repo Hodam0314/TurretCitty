@@ -13,6 +13,10 @@ public class Item : MonoBehaviour
     }
 
     [SerializeField] ItemType itemType;
+    [SerializeField] private bool isHp;
+    [SerializeField] private bool isSpeed;
+    [SerializeField] private bool isCoin;
+    
     SpriteRenderer sr;
     Sprite sprite;
 
@@ -28,7 +32,7 @@ public class Item : MonoBehaviour
 
     public void GetItem()
     {
-        if (InventoryManager.Instance.GetItem(sprite))
+        if (Inventory.Instance.GetItem(sprite, itemType))
         {
             Destroy(gameObject);
         }

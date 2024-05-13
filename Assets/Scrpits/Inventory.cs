@@ -6,17 +6,23 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryManager : MonoBehaviour
+public class Inventory : MonoBehaviour
 {
-    public static InventoryManager Instance;
+    public static Inventory Instance;
+    InvenDrag invendrag;
+    InvenDrop invendrop;
+    Player player;
     [SerializeField] GameObject inventoryUI;
     [SerializeField] Transform slotList;
     [SerializeField] private List<Transform> slots = new List<Transform>();
     [SerializeField] Button btnInven;
     [SerializeField] Button btnExit;
     [SerializeField] GameObject InventoryItem;
+    
     private int slotCount;
     private bool checkMenu;
+
+
 
 
     private void Awake()
@@ -29,6 +35,8 @@ public class InventoryManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        player = GetComponent<Player>();
+
         #region 버튼 기능
         btnInven.onClick.AddListener(() =>
         {
@@ -49,6 +57,28 @@ public class InventoryManager : MonoBehaviour
 
         #endregion
     }
+
+    #region 싱글턴 활용
+    public void SetInvenDrop(InvenDrop _value)
+    {
+        invendrop = _value;
+    }
+
+    public InvenDrop GetInvenDrop()
+    {
+        return invendrop;
+    }
+
+    public void SetInvenDrag(InvenDrag _value)
+    {
+        invendrag = _value;
+    }
+
+    public InvenDrag GetInvenDrag()
+    {
+        return invendrag;
+    }
+    #endregion
 
     void Start()
     {
@@ -132,14 +162,14 @@ public class InventoryManager : MonoBehaviour
         checkMenu = false;
     }
 
-    private int GetEmptySlots()
+    private int GetEmptySlots() //빈슬롯을 체크하는 코드
     {
         int count = slots.Count;
 
         for(int i = 0; i < count; ++i)
         {
             Transform slot = slots[i];
-            if(slot.childCount == 0)
+            if(slot.childCount == 0 && slot.GetComponent<Button>().interactable == true)
             {
                 return i;
             }
@@ -147,7 +177,7 @@ public class InventoryManager : MonoBehaviour
         return -1;
     }
 
-    public bool GetItem(Sprite _spr)
+    public bool GetItem(Sprite _spr, Item.ItemType itemType) //아이템을 플레이어가 얻었을때 동작하는 코드
     {
         int slotNum = GetEmptySlots();
         if(slotNum == -1)
@@ -156,10 +186,25 @@ public class InventoryManager : MonoBehaviour
         }
 
         InvenDrag drg = Instantiate(InventoryItem, slots[slotNum]).GetComponent<InvenDrag>();
-        drg.SetItem(_spr);
+        drg.SetItem(_spr,itemType);
+     
 
         return true;
     }
 
+    public void hp()
+    {
+        player.HpRecovery();
+    }
+
+    public void speed()
+    {
+        player.SpeedUp();
+    }
+
+    public void coin()
+    {
+        player.UseCoin();
+    }
 
 }

@@ -150,4 +150,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179a8459287b97f4da3f7ae931eb2245, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InventoryItem: {fileID: 3564528609808923760, guid: aefc6413535162841918a1dc80a59888, type: 3}
+  btn: {fileID: 947050184574531525}
+  item: {fileID: 3564528609808923760, guid: aefc6413535162841918a1dc80a59888, type: 3}

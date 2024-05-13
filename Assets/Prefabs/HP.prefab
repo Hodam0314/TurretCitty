@@ -144,3 +144,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemType: 0
+  isHp: 1
+  isSpeed: 0
+  isCoin: 0

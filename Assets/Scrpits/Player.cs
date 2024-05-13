@@ -207,4 +207,32 @@ public class Player : MonoBehaviour
     {
         GameManager.Instance.checkmoney(money);
     }
+
+    public void HpRecovery()
+    {
+        curHp += 5f;
+        if(curHp >= 100f)
+        {
+            curHp = 100f;
+        }
+    }
+
+    public void SpeedUp()
+    {
+        moveSpeed += 1;
+        if(moveSpeed >= 10)
+        {
+            moveSpeed = 10;
+        }
+    }
+
+    public void UseCoin()
+    {
+        money += 100;
+        if(money >= 10000)
+        {
+            money = 10000;
+        }
+    }
+
 }
