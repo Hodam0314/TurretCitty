@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting.ReorderableList;
+using UnityEditor.Build;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -10,6 +11,7 @@ public class Enemy : MonoBehaviour
     Rigidbody2D rigid;
     Explosion boom;
     Camera maincam;
+    Player enemyplayer;
     private bool isPlayer = false;
     private bool isMoving = false;
     private float moveSpeed = 3f;
@@ -37,6 +39,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float attacktimer = 5f;
     [SerializeField] GameObject bulletHit;
     [SerializeField] private bool haveItem = false;
+
     //GameObject player;
     GameObject player;
     EnemyAttack enemyAttack;
@@ -62,13 +65,29 @@ public class Enemy : MonoBehaviour
     //}
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == GameTag.Player.ToString())
+        if (collision.gameObject.tag == GameTag.Player.ToString())
         {
-            Hit(damage);
-            Player playersc = player.GetComponent<Player>();
-            playersc.Hit(damage);
+            enemyplayer = collision.gameObject.GetComponent<Player>();
+            enemyplayer.Hit(damage);
+
+
         }
     }
+
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == GameTag.Player.ToString())
+        {
+            enemyplayer = collision.gameObject.GetComponent<Player>();
+            enemyplayer.Hit(damage);
+
+        }
+
+    }
+
+
+
 
     private void Awake()
     {
@@ -76,7 +95,7 @@ public class Enemy : MonoBehaviour
         spriteR = GetComponent<SpriteRenderer>();
         rigid = GetComponent<Rigidbody2D>();
         maincam = Camera.main;
-        
+
     }
 
     private void Start()
@@ -144,7 +163,7 @@ public class Enemy : MonoBehaviour
         mobHp -= _damage;
         StartCoroutine(enemyhit());
         worldpos = maincam.WorldToScreenPoint(transform.position);
-        GameObject text = Instantiate(dmgtext, worldpos, Quaternion.identity,Canvas);
+        GameObject text = Instantiate(dmgtext, worldpos, Quaternion.identity, Canvas);
         Damage dmg = text.GetComponent<Damage>();
         dmg.SetDamage(_damage, transform.position);
 
@@ -152,8 +171,8 @@ public class Enemy : MonoBehaviour
 
         if (bulletattack == true)
         {
-        Instantiate(bulletHit, transform.position, Quaternion.identity, layerDynamic);
-        bulletattack = false;
+            Instantiate(bulletHit, transform.position, Quaternion.identity, layerDynamic);
+            bulletattack = false;
         }
         if (mobHp <= 0)
         {
@@ -172,67 +191,67 @@ public class Enemy : MonoBehaviour
 
     IEnumerator enemyhit()
     {
-        for(int i = 0; i <= 2; i++)
+        for (int i = 0; i <= 2; i++)
         {
-        yield return new WaitForSeconds(0.1f);
-        spriteR.color = new Color(1, 1, 1, 0.5f);
-        yield return new WaitForSeconds(0.1f);
-        spriteR.color = new Color(1, 1, 1, 1);
+            yield return new WaitForSeconds(0.1f);
+            spriteR.color = new Color(1, 1, 1, 0.5f);
+            yield return new WaitForSeconds(0.1f);
+            spriteR.color = new Color(1, 1, 1, 1);
         }
     }
 
-    private void slimeattack()
-    {
-        if(enemyAttack.checkEnemy == true && Slime == true)
+        private void slimeattack()
         {
-            attackcool += Time.deltaTime;
-            if (attackcool >= attacktimer)
+            if (enemyAttack.checkEnemy == true && Slime == true)
             {
-            Vector3 plyer = player.transform.position;
-            Vector3 Enemy = transform.position;
+                attackcool += Time.deltaTime;
+                if (attackcool >= attacktimer)
+                {
+                    Vector3 plyer = player.transform.position;
+                    Vector3 Enemy = transform.position;
 
-            dir = plyer - Enemy;//방향
-            dir.Normalize();
-            rigid.AddForce(dir*7, ForceMode2D.Impulse); //AddForce 사용법 , ForceMode2D 중 Impulse = 한번에 확 밀어내는 힘 , Force = 지긋이 밀어주는 힘
-                attackcool = 0f;
-                isattack = true;
+                    dir = plyer - Enemy;//방향
+                    dir.Normalize();
+                    rigid.AddForce(dir * 7, ForceMode2D.Impulse); //AddForce 사용법 , ForceMode2D 중 Impulse = 한번에 확 밀어내는 힘 , Force = 지긋이 밀어주는 힘
+                    attackcool = 0f;
+                    isattack = true;
+                }
+            }
+
+
+        }
+
+        public void checkBullet()
+        {
+            bulletattack = true;
+        }
+
+        private void checkattack()
+        {
+            if (isattack == true)
+            {
+                enemytime += Time.deltaTime;
+                if (enemytime >= enemytimer)
+                {
+                    rigid.velocity = Vector2.zero;
+                    enemytime = 0f;
+                    isattack = false;
+                }
+
             }
         }
 
-
-    }
-
-    public void checkBullet()
-    {
-        bulletattack = true;
-    }
-
-    private void checkattack()
-    {
-        if(isattack == true)
+        public void GetItem()
         {
-            enemytime += Time.deltaTime;
-            if(enemytime >= enemytimer)
-            {
-                rigid.velocity = Vector2.zero;
-                enemytime = 0f;
-                isattack = false;
-            }
-
+            haveItem = true;
+            spriteR.color = new Color(1, 0.3f, 1, 1);
         }
+
+        public void SpawnLevelUp()
+        {
+            mobHp += 10f;
+            damage += 3f;
+        }
+
+
     }
-
-    public void GetItem()
-    {
-        haveItem = true;
-        spriteR.color = new Color(1, 0.3f, 1, 1);
-    }
-
-    public void SpawnLevelUp()
-    {
-        mobHp += 10f;
-        damage += 3f;
-    }
-
-
-}

@@ -122,7 +122,7 @@ public class Inventory : MonoBehaviour
                 GameManager.Instance.DisableInven();
                 Time.timeScale = 1.0f;
             }
-            else
+            else 
             {
                 inventoryUI.SetActive(true);
                 GameManager.Instance.ActiveInven();
