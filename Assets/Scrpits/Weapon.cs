@@ -24,11 +24,11 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float hammerDamage = 25f;
     [SerializeField] private float swordDamage = 10f;
     [SerializeField] private float cooltime = 0.3f;
+    [SerializeField] private Transform layerDynamic;
     private float curtime;
 
     Player player;
     Vector3 moveDir;
-    private Transform layerDynamic;
     public Transform pos;
 
     private void Start()
