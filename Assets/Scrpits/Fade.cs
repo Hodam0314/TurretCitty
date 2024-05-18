@@ -2,90 +2,101 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Fade : MonoBehaviour
 {
-    [SerializeField] Image img;
+    public static Fade instance;
+    Image img;
     [SerializeField] Button fadein;
     [SerializeField] Button fadeout;
     private float time = 0f;
     private float F_time = 1f;
-    private bool checkfadein = false;
-    private bool checkfadeinstart = false;
-    private bool checkfadeout = false;
-    private bool checkfadeoutstart = false;
+    private UnityAction action = null;
 
     private void Awake()
     {
-        fadein.onClick.AddListener(() =>
+        if (instance == null)
         {
-            checkfadein = true;
-            Fadein();
-        });
-        fadeout.onClick.AddListener(() =>
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
         {
-            checkfadeout = true;
-            Fadeout();
-        });
+            Destroy(gameObject);
+        }
+
+        //fadein.onClick.AddListener(() =>
+        //{
+        //    checkfadein = true;
+        //    FadeOut();
+        //});
+        //fadeout.onClick.AddListener(() =>
+        //{
+        //    checkfadeout = true;
+        //    FadeIn();
+        //});
+        img = GetComponentInChildren<Image>();
     }
 
-    private void Fadein()
+    public void FadeOut(UnityAction _action)
     {
-        if(checkfadein == true && checkfadeinstart == false)
-        {
+        action = _action;
         StartCoroutine(FadeOn());
-        }
+
     }
-    private void Fadeout()
+    public void FadeIn()
     {
-        if(checkfadeout == true && checkfadeoutstart == false)
-        {
+
         StartCoroutine(FadeOff());
-        }
     }
 
     IEnumerator FadeOn()
     {
-        if (checkfadeout == false)
+
+        img.gameObject.SetActive(true);
+        time = 0f;
+        Color alpha = img.color;
+        while (alpha.a < 1f)
         {
-            img.gameObject.SetActive(true);
-            checkfadeinstart = true;
-            time = 0f;
-            Color alpha = img.color;
-            while (alpha.a < 1f)
-            {
-                time += Time.deltaTime / F_time;
-                alpha.a = Mathf.Lerp(0, 1, time);
-                img.color = alpha;
-                yield return null;
-            }
+            time += Time.unscaledDeltaTime / F_time;
+            alpha.a = Mathf.Lerp(0, 1, time);
+            img.color = alpha;
+            yield return null;
         }
-        checkfadein = false;
-        checkfadeinstart = false;
-        yield return null;
+        if (action != null)
+        {
+            action.Invoke();
+            action = null;
+        }
+        yield return new WaitForSeconds(1);
+        time = 0f;
+        while (alpha.a > 0f)
+        {
+            time += Time.unscaledDeltaTime / F_time;
+            alpha.a = Mathf.Lerp(1, 0, time);
+            img.color = alpha;
+            yield return null;
+        }
+        img.gameObject.SetActive(false);
     }
 
     IEnumerator FadeOff()
     {
-        if (checkfadein == false)
-        {
-            checkfadeoutstart = true;
-            Color alpha = img.color;
-            time = 0f;
-            while (alpha.a > 0f)
-            {
-                time += Time.deltaTime / F_time;
-                alpha.a = Mathf.Lerp(1, 0, time);
-                img.color = alpha;
-                yield return null;
-            }
 
-        checkfadeout = false;
-        checkfadeoutstart = false;
-        img.gameObject.SetActive(false);
-        yield return null;
+        Color alpha = img.color;
+        time = 0f;
+        while (alpha.a > 0f)
+        {
+            time += Time.unscaledDeltaTime / F_time;
+            alpha.a = Mathf.Lerp(1, 0, time);
+            img.color = alpha;
+            yield return null;
         }
+
+        img.gameObject.SetActive(false);
+
     }
 
 

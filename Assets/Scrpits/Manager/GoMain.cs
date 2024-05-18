@@ -12,7 +12,10 @@ public class GoMain : MonoBehaviour
     {
         MainButton.onClick.AddListener(() =>
         {
+            Fade.instance.FadeOut(() =>
+            {
             SceneManager.LoadSceneAsync((int)enumScene.StartScene);
+            });
 
         });
 

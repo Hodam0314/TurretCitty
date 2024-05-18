@@ -146,8 +146,17 @@ public class Player : MonoBehaviour
     #region 플레이어 애니메이션 코드
     private void playerAnimation() //애니메이션 작동에 필요한 함수값을 받아주는 코드
     {
-        anim.SetInteger("isMoving", (int)moveDir.x);
-        anim.SetInteger("isJump", (int)moveDir.y);
+        float a = Input.GetAxisRaw("Horizontal");
+        float b = Input.GetAxisRaw("Vertical");
+
+        //Debug.Log($"Horizontal = {a}"); // 오른쪽 = 1 , 왼쪽 = -1
+        //Debug.Log($"Vertical = {b}");// 위 = 1 , 아래 = -1
+
+
+
+
+        anim.SetInteger("isMoving", (int)a);
+        anim.SetInteger("isUp", (int)b);
     }
     #endregion
 

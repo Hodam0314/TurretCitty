@@ -25,9 +25,10 @@ public class ScenceManager : MonoBehaviour
     {
         btnStart.onClick.AddListener(() =>
         {
-
-            SceneManager.LoadSceneAsync((int)enumScene.GameScene);
-
+            Fade.instance.FadeOut(() =>
+            {
+                SceneManager.LoadSceneAsync((int)enumScene.GameScene);
+            });
         });
 
         btnEnd.onClick.AddListener(() =>
@@ -55,6 +56,10 @@ public class ScenceManager : MonoBehaviour
             btnStart.interactable = true;
         });
 
+    }
+    private void Start()
+    {
+        Fade.instance.FadeIn();
     }
 
 

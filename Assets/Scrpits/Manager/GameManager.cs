@@ -72,10 +72,10 @@ public class GameManager : MonoBehaviour
         #region 버튼기능
         Main.onClick.AddListener(() =>
         {
-            if(checkInven == false)
+            if (checkInven == false)
             {
-            MenuMain.SetActive(true);
-            Inventory.Instance.ActiveMenu();
+                MenuMain.SetActive(true);
+                Inventory.Instance.ActiveMenu();
                 Time.timeScale = 0.0f;
             }
         });
@@ -98,7 +98,12 @@ public class GameManager : MonoBehaviour
 
         ExitYes.onClick.AddListener(() =>
         {
-            SceneManager.LoadSceneAsync((int)enumScene.StartScene);
+
+            Fade.instance.FadeOut(() =>
+            {
+                Time.timeScale = 1f;
+                SceneManager.LoadSceneAsync((int)enumScene.StartScene);
+            });
         });
         ExitNo.onClick.AddListener(() =>
         {
@@ -161,18 +166,24 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        SceneManager.LoadSceneAsync((int)enumScene.EndScene);
+        Fade.instance.FadeOut(() =>
+        {
+            SceneManager.LoadSceneAsync((int)enumScene.EndScene);
+        });
     }
 
     public void GameClear()
     {
-        SceneManager.LoadSceneAsync((int)enumScene.ClearScene);
+        Fade.instance.FadeOut(() =>
+        {
+            SceneManager.LoadSceneAsync((int)enumScene.ClearScene);
+        });
     }
 
 
     private void GetMainButton()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && checkInven == false) 
+        if (Input.GetKeyDown(KeyCode.Escape) && checkInven == false)
         {
             if (MenuMain.activeSelf == true)
             {
