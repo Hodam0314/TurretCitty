@@ -10,7 +10,7 @@ public class ShopContents : MonoBehaviour
     [SerializeField] TMP_Text info;
     [SerializeField] TMP_Text pay;
 
-    public void SetData(Sprite _spr, string _info, int _pay)
+    public void SetData(Sprite _spr, string _info, int _pay) //다른곳에서 SetData()안에 값을 받아온다.
     {
         itemImg.sprite = _spr;
         info.text = _info;
