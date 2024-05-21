@@ -7,8 +7,8 @@ using Unity.Properties;
 public class ShopData : MonoBehaviour
 {
     [SerializeField] TextAsset jsontext;
-    [SerializeField] Transform contents;
-    [SerializeField] GameObject fabShopItem;
+    [SerializeField] Transform contents; //상점 아이템이 생성될 위치
+    [SerializeField] GameObject fabShopItem; //프리팹화해놓은 상점 아이템
 
     public class Shopitem
     {
@@ -19,7 +19,7 @@ public class ShopData : MonoBehaviour
 
     List<Shopitem> ShopSell = new List<Shopitem>();
 
-    [SerializeField] List<Sprite> shopImg;
+    [SerializeField] List<Sprite> shopImg; //상점 아이템에 들어갈 이미지를 리스트화 시켜줌
 
     void Start()
     {
