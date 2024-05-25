@@ -10,17 +10,19 @@ public class Item : MonoBehaviour
         Hp,
         Speed,
         Coin,
+        GreenShild,
+        PurpleHeart,
     }
 
     [SerializeField] ItemType itemType;
     [SerializeField] private bool isHp;
     [SerializeField] private bool isSpeed;
     [SerializeField] private bool isCoin;
+    [SerializeField] private bool isGreenShild;
+    [SerializeField] private bool isPurpleHeart;
     
     SpriteRenderer sr;
     Sprite sprite;
-
-
 
 
     private void Awake()
@@ -32,7 +34,7 @@ public class Item : MonoBehaviour
 
     public void GetItem()
     {
-        if (Inventory.Instance.GetItem(sprite, itemType))
+        if (Inventory.Instance.GetItem(sprite, itemType)) //인벤토리 스크립트의 GetItem코드를 실행해서 등록이 가능하면 삭제 , 불가능하면 작동안하게 설정
         {
             Destroy(gameObject);
         }

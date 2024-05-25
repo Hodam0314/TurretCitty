@@ -1,11 +1,11 @@
 [
   {
-    "spritename": "S_ItemHeavyOutline_BarrelGreen_00",
+    "spritename": "GreenShild",
     "iteminfo": "그린 실드",
     "itempay": 150
   },
   {
-    "spritename": "S_ItemHeavyOutline_HeartPurple_00",
+    "spritename": "PurpleHeart",
     "iteminfo": "퍼플 하트",
     "itempay": 300
   }

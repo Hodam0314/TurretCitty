@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private GameObject Boom;
     [SerializeField] private bool isLookRight = false;
-    [SerializeField] private float money = 0f;
+    [SerializeField] private int money = 0;
 
     [Header("쓰레기통")]
     [SerializeField] Transform layerDynamic;
@@ -50,6 +50,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.SetPlayer(this);
+        //ShopManager.Instance.SetPlayer(this);
     }
     private void Update()
     {
@@ -242,6 +243,29 @@ public class Player : MonoBehaviour
         {
             money = 10000;
         }
+    }
+
+    public bool MoneyCheck(int _pay)
+    {
+        if(money >= _pay)
+        {
+            UseMoney(_pay);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void UseMoney(int _pay)
+    {
+        money -= _pay;
+    }
+
+    public void buyItem()
+    {
+
     }
 
 }

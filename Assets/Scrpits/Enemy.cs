@@ -12,14 +12,9 @@ public class Enemy : MonoBehaviour
     Explosion boom;
     Camera maincam;
     Player enemyplayer;
-    private bool isPlayer = false;
-    private bool isMoving = false;
-    private float moveSpeed = 3f;
-    private float minrange = -5f;
-    private float maxrange = 5f;
+
     private float attackcool = 0f;
-    private float movingtime = 0f;
-    private float movingtimer = 0.5f;
+
     private SpriteRenderer spriteR;
     private bool bulletattack = false;
     private bool isattack = false;
@@ -65,19 +60,20 @@ public class Enemy : MonoBehaviour
     //}
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == GameTag.Player.ToString())
+        if (collision.gameObject.tag == GameTag.Player.ToString()) //collision에 닿은 게임오브젝트의 게임태그가 플레이어일경우 실행
         {
-            enemyplayer = collision.gameObject.GetComponent<Player>();
-            enemyplayer.Hit(damage);
+            enemyplayer = collision.gameObject.GetComponent<Player>(); //닿은 오브젝트에게서 Player 스크립트 정보를 enemyplayer에 담아줌
+            enemyplayer.Hit(damage); //위에서 담은 정보를 활용하여 해당 Player 스크립트의 Hit 코드를 실행하는데 damage 값을 전달해서 실행함
 
 
         }
     }
 
 
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision) // 위의 OnCollisionEnter2D함수와 동일하지만 해당함수는 Stay로써
+        //OnCollisionStay2D란 콜라이더가 Stay = 머무르다 즉, 계속 닿고있을경우 지속적으로 실행해주는 함수이다.
     {
-        if(collision.gameObject.tag == GameTag.Player.ToString())
+        if(collision.gameObject.tag == GameTag.Player.ToString()) 
         {
             enemyplayer = collision.gameObject.GetComponent<Player>();
             enemyplayer.Hit(damage);
@@ -106,7 +102,7 @@ public class Enemy : MonoBehaviour
 
     private void GetPlayer()
     {
-        Player playerSc = GameManager.Instance.GetPlayer();
+        Player playerSc = GameManager.Instance.GetPlayer(); //싱글턴으로 만들어놓은 Player을 가져오는 코드
         if (playerSc != null)
         {
             player = playerSc.gameObject;
@@ -134,17 +130,17 @@ public class Enemy : MonoBehaviour
 
     private void moving()
     {
-        Vector3 plyer = player.transform.position;
-        Vector3 Enemy = transform.position;
+        Vector3 plyer = player.transform.position; //적의 transform 위치
+        Vector3 Enemy = transform.position; // 나의 transform 위치
 
-        dir = plyer - Enemy;//방향
-        dir.Normalize();
-        transform.position += dir * Time.deltaTime;
+        dir = plyer - Enemy;//적과 나의 transform 위치를 뺌으로써 방향값을 가져옴
+        dir.Normalize(); //가져온 방향값을 Normalize화 즉, 해당 방향값을 1의 값으로 변경
+        transform.position += dir * Time.deltaTime; //만들어놓은 적의 방향으로 Time.deltaTime 만큼 움직이도록 설계
     }
 
     private void turning()
     {
-        if (dir.x > 0 && transform.localScale.x < 1)
+        if (dir.x > 0 && transform.localScale.x < 1) //뭐임 얘 어떻게 동작하는거임??
         {
             Vector3 scale = transform.localScale;
             scale.x *= -1;

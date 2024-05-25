@@ -12,7 +12,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] Button MainStart;
     [SerializeField] Button MainSave;
     [SerializeField] Button MainStop;
+    [SerializeField] Button OpenShop;
+    [SerializeField] Button ExitShop;
     [SerializeField] GameObject MenuMain;
+    [SerializeField] GameObject ShopUi;
     private bool menuOn = false;
 
     [Header("메인화면 체크")]
@@ -48,9 +51,12 @@ public class GameManager : MonoBehaviour
     private Turret turret;
     private Camera maincam;
     private float playermoney;
-    private Shop shop;
+    private ShopManager shop;
     private Inventory inventory;
-    private bool checkInven = false;
+    private bool checkInven = false; //인벤토리가 열렸는지 체크하는 bool
+    private bool checkMain = false; //Main메뉴가 열렸는지 체크하는 bool
+    private bool checkShop = false; //Shop메뉴가 열렸는지 체크하는 bool
+    private bool checkMainExit = false;
 
     float playerdeathtimecheck = 3f;
     float playerdeathtime;
@@ -70,10 +76,27 @@ public class GameManager : MonoBehaviour
         maincam = GetComponent<Camera>();
 
         #region 버튼기능
+
+        OpenShop.onClick.AddListener(() =>
+        {
+            if (checkInven == false && checkMain == false)
+            {
+                checkShop = true;
+                ShopUi.SetActive(true);
+            }
+        });
+
+        ExitShop.onClick.AddListener(() =>
+        {
+            checkShop = false;
+            ShopUi.SetActive(false);
+        });
+
         Main.onClick.AddListener(() =>
         {
-            if (checkInven == false)
+            if (checkInven == false && checkShop == false)
             {
+                checkMain = true;
                 MenuMain.SetActive(true);
                 Inventory.Instance.ActiveMenu();
                 Time.timeScale = 0.0f;
@@ -83,16 +106,19 @@ public class GameManager : MonoBehaviour
         MainStart.onClick.AddListener(() =>
         {
             MenuMain.SetActive(false);
+            Inventory.Instance.DisableMenu();
+            checkMain = false;
+            Time.timeScale = 1.0f;
         });
 
         MainSave.onClick.AddListener(() =>
         {
             //Json 을 이용한 저장기능 구현예정
-
         });
 
         MainStop.onClick.AddListener(() =>
         {
+            checkMainExit = true;
             checkExit.SetActive(true);
         });
 
@@ -107,6 +133,7 @@ public class GameManager : MonoBehaviour
         });
         ExitNo.onClick.AddListener(() =>
         {
+            checkMainExit = false;
             checkExit.SetActive(false);
         });
         #endregion
@@ -142,12 +169,12 @@ public class GameManager : MonoBehaviour
         turret = _value;
     }
 
-    public Shop GetShop()
+    public ShopManager GetShop()
     {
         return shop;
     }
 
-    public void SetShop(Shop _value)
+    public void SetShop(ShopManager _value)
     {
         shop = _value;
     }
@@ -183,7 +210,7 @@ public class GameManager : MonoBehaviour
 
     private void GetMainButton()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && checkInven == false)
+        if (Input.GetKeyDown(KeyCode.Escape) && checkInven == false && checkShop == false && checkMainExit == false)
         {
             if (MenuMain.activeSelf == true)
             {
@@ -193,9 +220,9 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                MenuMain.SetActive(true);
-                Inventory.Instance.ActiveMenu();
-                Time.timeScale = 0.0f;
+                    MenuMain.SetActive(true);
+                    Inventory.Instance.ActiveMenu();
+                    Time.timeScale = 0.0f;
             }
         }
     }
