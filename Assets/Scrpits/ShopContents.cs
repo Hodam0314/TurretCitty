@@ -18,16 +18,16 @@ public class ShopContents : MonoBehaviour
     {
         btnbuy.onClick.AddListener(() =>
         {
-            if (player != null)
+            if (player != null) //플레이어에게 접근이 가능한지 체크
             {
-                if (player.MoneyCheck(itempay))
+                if (player.MoneyCheck(itempay)) //플레이어가 구매가능한지 돈 체크
                 {
                     player.buyItem();
                 }
-            }
-            else
-            {
-                return;
+                else
+                {
+                    Debug.Log("돈이 부족합니다.");
+                }
             }
         });
     }
